@@ -1,0 +1,15 @@
+version: "3"
+services:
+ apollo-configservice:
+  container_name: apollo-configservice
+  build: /root/apollo/apollo-1.2.0/apollo-configservice/src/main/docker/
+  image: apollo-configservice
+  ports:
+   - 8080:8080
+  environment:
+   - spring_datasource_url=jdbc:mysql://192.168.1.39:3306/ApolloConfigDB_TEST?characterEncoding=utf8
+   - spring_datasource_username=root
+   - spring_datasource_password=123456
+   - eureka.instance.ip-address=192.168.1.50
+
+  restart: always

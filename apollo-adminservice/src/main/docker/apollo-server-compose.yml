@@ -1,0 +1,15 @@
+version: "3"
+services:
+ apollo-portal:
+  container_name: apollo-portal
+  build: /root/apollo/apollo-1.2.0/apollo-adminservice/src/main/docker/
+  image: apollo-portal
+  ports:
+   - 8070:8070
+  environment:
+   - spring_datasource_url=jdbc:mysql://127.0.0.1:8306/ApolloPortalDB?characterEncoding=utf8
+   - spring_datasource_username=root
+   - spring_datasource_password=mysql2019*
+   
+
+  restart: always

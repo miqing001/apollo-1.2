@@ -1,0 +1,51 @@
+version: "3"
+services:
+ apollo-configservice:
+  container_name: apollo-configservice
+  build: /root/apollo/apollo-1.2.0/apollo-configservice/src/main/docker/
+  image: apollo-configservice
+  volumes:
+   - "/docker/apollo/logs/100003171:/opt/logs/100003171"
+  ports:
+   - 8080:8080
+  environment:
+   - spring_datasource_url=jdbc:mysql://192.168.1.39:3306/ApolloConfigDB?characterEncoding=utf8
+   - spring_datasource_username=root
+   - spring_datasource_password=123456
+   - eureka.instance.ip-address=192.168.1.50
+  restart: always
+
+ apollo-adminservice:
+  container_name: apollo-adminservice
+  build: /root/apollo/apollo-1.2.0/apollo-adminservice/src/main/docker/
+  image: apollo-adminservice
+  volumes:
+   - "/docker/apollo/logs/100003172:/opt/logs/100003172"
+  ports:
+   - 8090:8090
+  environment:
+   - spring_datasource_url=jdbc:mysql://192.168.1.39:3306/ApolloConfigDB?characterEncoding=utf8
+   - spring_datasource_username=root
+   - spring_datasource_password=123456
+   - eureka.instance.ip-address=192.168.1.50
+  depends_on:
+   - apollo-configservice
+
+  restart: always
+
+ apollo-portal:
+  container_name: apollo-portal
+  build: /root/apollo/apollo-1.2.0/apollo-portal/src/main/docker/
+  image: apollo-portal
+  volumes:
+   - "/docker/apollo/logs/100003173:/opt/logs/100003173"
+#   - "/Apollo/docker-image/apollo-portal/config/apollo-env.properties:/apollo-portal/config/apollo-env.properties"
+  ports:
+   - 8070:8070
+  environment:
+   - spring_datasource_url=jdbc:mysql://192.168.1.39:3306/ApolloPortalDB?characterEncoding=utf8
+   - spring_datasource_username=root
+   - spring_datasource_password=123456
+  depends_on:
+   - apollo-adminservice
+  restart: always
